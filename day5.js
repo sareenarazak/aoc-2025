@@ -54,4 +54,10 @@ const total = (ranges, ids) => {
     return count;
 }
 
-total(ranges,ids);
+// total(ranges,ids);
+//2 -4 ==? 3
+//part 2
+const merged = sortAndMergeRanges(ranges);
+const sum = merged.reduce((acc, curr) =>  acc + ( curr[1] - curr[0] + 1 ), 0);
+
+console.log(`total fresh : ${sum}`);
