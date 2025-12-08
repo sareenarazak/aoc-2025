@@ -18,14 +18,19 @@ const isAccessible = (grid, r, c) =>
 
 const forkLiftableRolls = (grid) => {
     let count = 0;
-
+    const liftableRolls = [];
     for (let r = 0; r < grid.length ; r++) {
         for (let c = 0; c < grid[0].length; c++) {
             if(grid[r][c] === '@' &&
                 isAccessible(grid, r, c)) {
+                liftableRolls.push([r, c])
                 count++
             }
         }
+    }
+    // for part2 , mark all as X
+    for (const [r, c] of liftableRolls) {
+        grid[r][c] = '.';
     }
     console.log(`count ${count}`);
     return count;
@@ -42,5 +47,11 @@ const readInput = (path)  =>  {
 
 const lines = readInput("day4.txt").split(/\r?\n/);
 const grid = lines.map(line => line.split(""));
-
-forkLiftableRolls(grid)
+// part 2
+let total = forkLiftableRolls(grid);
+let total = 0;
+while (count > 0) {
+    total += count
+    count = forkLiftableRolls(grid);
+}
+console.log(`total : ${total}`);
