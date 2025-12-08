@@ -13,19 +13,30 @@ maxDigitWithIndex = (number) => {
     return [maxDigit, maxIndex];
 }
 
-maxJoltage = (battery) => {
-    const [maxDigit, maxIndex] =  maxDigitWithIndex(battery.slice(0, -1));
-    const [nextMaxDigit, nextMaxIndex] =  maxDigitWithIndex(battery.slice(maxIndex + 1));
+maxJoltage = (battery, count) => {
+    let maxJoltage = 0;
+    let start = 0; 
+    while(count > 0) {
+        const end = battery.length - count + 1;
+        // console.log(`considering ${battery.slice(start, end)}`);
+        const [digit, index] =  maxDigitWithIndex(battery.slice(start, end));
+        start += index + 1; // move start +1 after the max digit index 
 
-    return maxDigit * 10 + nextMaxDigit;
+        maxJoltage  += (10 ** (count - 1)) * digit;
+        count--;
+    }
+
+
+    return maxJoltage;
 }
 
 // :D 
-totJolt = (batteries) => {
+totJolt = (batteries, count = 12) => {
     let total = 0;
 
+
     batteries.forEach(bat => {
-        total += maxJoltage(bat);
+        total += maxJoltage(bat, count);
     });
     
     return total;
@@ -41,4 +52,6 @@ const readInput = (path)  =>  {
 }
 
 const batteries = readInput("day3.txt").split(/\r?\n/);
-console.log(totJolt(batteries));
+console.log(`part 1: ${totJolt(batteries, 2)}`);
+console.log(`part 2 ${totJolt(batteries)}`);
+

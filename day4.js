@@ -47,8 +47,9 @@ const readInput = (path)  =>  {
 
 const lines = readInput("day4.txt").split(/\r?\n/);
 const grid = lines.map(line => line.split(""));
+
 // part 2
-let total = forkLiftableRolls(grid);
+let count = forkLiftableRolls(grid);
 let total = 0;
 while (count > 0) {
     total += count
