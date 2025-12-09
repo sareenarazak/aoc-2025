@@ -92,7 +92,6 @@ const connect1 = (points) => {
     return result1;
 }
 
-
 const connect2 = (points) => {
     const n = points.length;
     const edges =[];
@@ -130,6 +129,7 @@ const connect2 = (points) => {
     }
     return result2;
 }
+
 const points = readInput("day8.txt").split(/\r?\n/);
 
 connect1(points);
