@@ -15,14 +15,28 @@ const makeTheThing = (edges) => {
     return [node, neighbours];
 }
 
-const numOfPaths = (graph, src, dest) => {
-    if (src === dest) return 1;
+const numOfPaths = (graph, src, dest, hasDAC, hasFFT, memo) => {
+    const key = `${src}-${hasDAC}-${hasFFT}`;
+
+    if (memo.has(key)) return memo.get(key);
+
+    // this value can be passed down to all the paths from now on 
+    if (src === "dac") hasDAC = true;
+    if (src === "fft") hasFFT = true;
+
+    if (src === dest) {
+        const count = (hasDAC && hasFFT) ? 1 : 0;
+        memo.set(key, count);
+        return count;
+    }
 
     let count = 0;
-
-    for (const neighbour of graph.get(src)) {
-        count += numOfPaths(graph, neighbour, dest);
+    const neighbours = graph.get(src) || [];
+    for (const fren of neighbours) {
+        count += numOfPaths(graph, fren, dest, hasDAC, hasFFT, memo);
     }
+
+    memo.set(key, count);
     return count;
 }
 
@@ -33,4 +47,9 @@ const tuples = readInput("day11.txt")
 
 const graph = new Map(tuples);
 
-console.log(`number of paths. ${numOfPaths(graph, "you", "out")}`)
+//part 1 
+// console.log(`number of paths. ${numOfPaths(graph, "you", "out")}`)
+
+// part 2 
+// keep track of the path and at the end of the path check for the existence of dac and fft
+console.log(`number of paths. ${numOfPaths(graph, "svr", "out", false, false, new Map())}`)
